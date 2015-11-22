@@ -24,7 +24,7 @@ namespace SpotifyRecorder.Core.Implementations.Services
 
         public void UpdateTags(ID3Tags tags, RecordedSong song)
         {
-            using (var stream = new MemoryStream(song.Data.Length + 1000))
+            using (var stream = new MemoryStream(song.Data.Length * 2))
             {
                 stream.Write(song.Data, 0, song.Data.Length);
                 stream.Position = 0;
