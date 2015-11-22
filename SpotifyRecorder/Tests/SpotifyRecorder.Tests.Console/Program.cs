@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using NAudio.Wave;
 using SpotifyRecorder.Core.Abstractions.Entities;
+using SpotifyRecorder.Core.Abstractions.Extensions;
 using SpotifyRecorder.Core.Abstractions.Services;
 using SpotifyRecorder.Core.Implementations.Services;
 
@@ -32,7 +33,8 @@ namespace SpotifyRecorder.Tests.Console
 
                     service.UpdateTags(tags, recorded);
 
-                    File.WriteAllBytes($".\\{Guid.NewGuid().ToString("N")}.mp3", recorded.Data);
+                    string fileName = $"{recorded.Song.Artist} - {recorded.Song.Title}.mp3".ToValidFileName();
+                    File.WriteAllBytes(Path.Combine(".", fileName), recorded.Data);
                 }
 
                 if (song != null)

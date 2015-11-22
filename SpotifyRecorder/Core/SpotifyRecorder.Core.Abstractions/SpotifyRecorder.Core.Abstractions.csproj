@@ -44,6 +44,7 @@
     <Compile Include="Entities\ID3Tags.cs" />
     <Compile Include="Entities\RecordedSong.cs" />
     <Compile Include="Entities\Song.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\AudioOutputDevice.cs" />
     <Compile Include="Services\IAudioOutputDeviceService.cs" />
