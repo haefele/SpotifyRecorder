@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{068229F4-DE84-40F6-AB7A-B109D2EA0E90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyRecorder.Core.Abstractions", "Core\SpotifyRecorder.Core.Abstractions\SpotifyRecorder.Core.Abstractions.csproj", "{276DF5DF-3414-4CC9-AFFB-CB67F76526E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyRecorder.Core.Implementations", "Core\SpotifyRecorder.Core.Implementations\SpotifyRecorder.Core.Implementations.csproj", "{ED80AA0B-9BFF-4408-800C-EB6C49DF0178}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{79062ABD-E2E1-4CC0-9BF7-7B10E3C0B220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpotifyRecorder.Tests.Console", "Tests\SpotifyRecorder.Tests.Console\SpotifyRecorder.Tests.Console.csproj", "{A30859DA-C379-42AA-9459-F8A271F132F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{276DF5DF-3414-4CC9-AFFB-CB67F76526E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276DF5DF-3414-4CC9-AFFB-CB67F76526E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276DF5DF-3414-4CC9-AFFB-CB67F76526E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276DF5DF-3414-4CC9-AFFB-CB67F76526E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED80AA0B-9BFF-4408-800C-EB6C49DF0178}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED80AA0B-9BFF-4408-800C-EB6C49DF0178}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED80AA0B-9BFF-4408-800C-EB6C49DF0178}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED80AA0B-9BFF-4408-800C-EB6C49DF0178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30859DA-C379-42AA-9459-F8A271F132F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30859DA-C379-42AA-9459-F8A271F132F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30859DA-C379-42AA-9459-F8A271F132F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30859DA-C379-42AA-9459-F8A271F132F5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{276DF5DF-3414-4CC9-AFFB-CB67F76526E0} = {068229F4-DE84-40F6-AB7A-B109D2EA0E90}
+		{ED80AA0B-9BFF-4408-800C-EB6C49DF0178} = {068229F4-DE84-40F6-AB7A-B109D2EA0E90}
+		{A30859DA-C379-42AA-9459-F8A271F132F5} = {79062ABD-E2E1-4CC0-9BF7-7B10E3C0B220}
+	EndGlobalSection
+EndGlobal
