@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using NAudio.Wave;
+using System.Threading.Tasks;
 using SpotifyRecorder.Core.Abstractions.Entities;
 using SpotifyRecorder.Core.Abstractions.Extensions;
 using SpotifyRecorder.Core.Abstractions.Services;
@@ -24,17 +24,7 @@ namespace SpotifyRecorder.Tests.Console
                 if (currentRecorder != null)
                 {
                     System.Console.WriteLine($"Song {currentRecorder.Song.Title} finished.");
-                    var recorded = currentRecorder.StopRecording();
-
-                    ID3TagService service = new ID3TagService();
-                    var tags = service.GetTags(recorded);
-                    tags.Artists = new[] {recorded.Song.Artist};
-                    tags.Title = recorded.Song.Title;
-
-                    service.UpdateTags(tags, recorded);
-
-                    string fileName = $"{recorded.Song.Artist} - {recorded.Song.Title}.mp3".ToValidFileName();
-                    File.WriteAllBytes(Path.Combine(".", fileName), recorded.Data);
+                    StopRecording(currentRecorder);
                 }
 
                 if (song != null)
@@ -50,6 +40,25 @@ namespace SpotifyRecorder.Tests.Console
             });
             
             System.Console.ReadLine();
+        }
+
+        private static void StopRecording(IAudioRecorder recorder)
+        {
+            Task.Run(() =>
+            {
+                var recorded = recorder.StopRecording();
+
+                ID3TagService service = new ID3TagService();
+
+                var tags = service.GetTags(recorded);
+                tags.Artists = new[] { recorded.Song.Artist };
+                tags.Title = recorded.Song.Title;
+
+                service.UpdateTags(tags, recorded);
+
+                string fileName = $"{recorded.Song.Artist} - {recorded.Song.Title}.mp3".ToValidFileName();
+                File.WriteAllBytes(Path.Combine(".", fileName), recorded.Data);
+            });
         }
     }
 }
