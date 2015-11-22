@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using NAudio.Wave;
+using SpotifyRecorder.Core.Abstractions.Entities;
 using SpotifyRecorder.Core.Abstractions.Services;
 using SpotifyRecorder.Core.Implementations.Services;
 
@@ -14,6 +16,7 @@ namespace SpotifyRecorder.Tests.Console
             var spotifyService = new SpotifyService();
 
             IAudioRecorder currentRecorder = null;
+            AudioOutputDevice stereoMix = new AudioOutputDeviceService().GetOutputDevices().FirstOrDefault(f => f.Name.Contains("Stereo"));
 
             spotifyService.GetSong().Subscribe(song =>
             {
@@ -21,17 +24,26 @@ namespace SpotifyRecorder.Tests.Console
                 {
                     System.Console.WriteLine($"Song {currentRecorder.Song.Title} finished.");
                     var recorded = currentRecorder.StopRecording();
-                    File.WriteAllBytes($".\\{recorded.Song.Artist} - {recorded.Song.Title}.wav", recorded.Data);
+
+                    ID3TagService service = new ID3TagService();
+                    var tags = service.GetTags(recorded);
+                    tags.Artists = new[] {recorded.Song.Artist};
+                    tags.Title = recorded.Song.Title;
+
+                    service.UpdateTags(tags, recorded);
+
+                    File.WriteAllBytes($".\\{Guid.NewGuid().ToString("N")}.mp3", recorded.Data);
                 }
 
                 if (song != null)
                 {
                     System.Console.WriteLine($"Recording song {song.Title}");
-                    currentRecorder = recordingService.StartRecording(song);
+                    currentRecorder = recordingService.StartRecording(stereoMix, song);
                 }
                 else
                 {
                     System.Console.WriteLine("Currently no song is playing.");
+                    currentRecorder = null;
                 }
             });
             
