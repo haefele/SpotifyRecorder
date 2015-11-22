@@ -64,7 +64,7 @@ namespace SpotifyRecorder.Core.Implementations.Services
         {
             using (var reader = new WaveFileReader(this._fileName))
             using (var result = new MemoryStream())
-            using (var mp3Writer = new LameMP3FileWriter(result, reader.WaveFormat, LAMEPreset.STANDARD))
+            using (var mp3Writer = new LameMP3FileWriter(result, reader.WaveFormat, bitRate:320))
             {
                 reader.CopyTo(mp3Writer);
                 return result.ToArray();
