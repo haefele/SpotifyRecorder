@@ -81,12 +81,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AudioOutputDeviceService.cs" />
     <Compile Include="Services\AudioRecorder.cs" />
     <Compile Include="Services\AudioRecordingService.cs" />
     <Compile Include="Services\ID3TagService.cs" />
     <Compile Include="Services\MemoryFileAbstraction.cs" />
+    <Compile Include="Services\SongWriter.cs" />
     <Compile Include="Services\SpotifyService.cs" />
+    <Compile Include="Settings\InMemorySettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SpotifyRecorder.Core.Abstractions\SpotifyRecorder.Core.Abstractions.csproj">

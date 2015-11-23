@@ -2,14 +2,22 @@
 using SpotifyRecorder.Core.Abstractions;
 using SpotifyRecorder.Core.Abstractions.Entities;
 using SpotifyRecorder.Core.Abstractions.Services;
+using SpotifyRecorder.Core.Abstractions.Settings;
 
 namespace SpotifyRecorder.Core.Implementations.Services
 {
     public class AudioRecordingService : IAudioRecordingService
     {
-        public IAudioRecorder StartRecording(AudioOutputDevice device, Song song)
+        private readonly ISettings _settings;
+
+        public AudioRecordingService(ISettings settings)
         {
-            var recorder = new AudioRecorder(device, song);
+            this._settings = settings;
+        }
+
+        public IAudioRecorder StartRecording(Song song)
+        {
+            var recorder = new AudioRecorder(this._settings, song);
             recorder.StartRecording();
 
             return recorder;

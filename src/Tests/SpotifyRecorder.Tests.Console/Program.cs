@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using SpotifyRecorder.Core.Abstractions.Entities;
 using SpotifyRecorder.Core.Abstractions.Extensions;
 using SpotifyRecorder.Core.Abstractions.Services;
+using SpotifyRecorder.Core.Abstractions.Settings;
 using SpotifyRecorder.Core.Implementations.Services;
+using SpotifyRecorder.Core.Implementations.Settings;
 
 namespace SpotifyRecorder.Tests.Console
 {
@@ -13,36 +15,33 @@ namespace SpotifyRecorder.Tests.Console
     {
         static void Main(string[] args)
         {
-            var recordingService = new AudioRecordingService();
-            var spotifyService = new SpotifyService();
+            var settings = new InMemorySettings
+            {
+                BitRate = BitRate.Extreme,
+                MillisecondsToCheckForTrackChanges = 10,
+                RecorderDeviceName = "Realtek High Definition Audio",
+                OutputDirectory = Path.Combine(".", "Music"),
+                SkipExistingSongs = true
+            };
+            
+            var recordingService = new AudioRecordingService(settings);
+            var spotifyService = new SpotifyService(settings);
+            var writer = new SongWriter(settings);
 
             IAudioRecorder currentRecorder = null;
-            AudioOutputDevice stereoMix = new AudioOutputDeviceService().GetOutputDevices().FirstOrDefault(f => f.Name.Contains("Stereo"));
 
             spotifyService.GetSong().Subscribe(song =>
             {
                 if (currentRecorder != null)
                 {
                     System.Console.WriteLine($"Song {currentRecorder.Song.Title} finished.");
-                    StopRecording(currentRecorder);
+                    StopRecording(currentRecorder, writer);
                 }
-
                 
                 if (song != null)
                 {
-                    var expectedFilePath = GetFilePath(song);
-
-                    if (File.Exists(expectedFilePath))
-                    {
-                        System.Console.WriteLine($"Currently playing {song.Title}"); 
-                        return;
-                    }
-                    else
-                    {
-                        
-                        System.Console.WriteLine($"Recording song {song.Title}");
-                        currentRecorder = recordingService.StartRecording(stereoMix, song);
-                    }
+                    System.Console.WriteLine($"Recording song {song.Title}");
+                    currentRecorder = recordingService.StartRecording(song);
                 }
                 else
                 {
@@ -54,13 +53,7 @@ namespace SpotifyRecorder.Tests.Console
             System.Console.ReadLine();
         }
 
-        private static string GetFilePath(Song song)
-        {
-            var fileName = $"{song?.Artist} - {song?.Title}.mp3".ToValidFileName();
-            return Path.Combine(".", "Music", fileName);
-        }
-
-        private static void StopRecording(IAudioRecorder recorder)
+        private static void StopRecording(IAudioRecorder recorder, ISongWriter writer)
         {
             Task.Run(() =>
             {
@@ -76,16 +69,8 @@ namespace SpotifyRecorder.Tests.Console
                 tags.Title = recorded.Song.Title;
 
                 service.UpdateTags(tags, recorded);
-
-                var filePath = GetFilePath(recorded.Song);
-
-                if (File.Exists(filePath))
-                    return;
-
-                if (Directory.Exists(Path.GetDirectoryName(filePath)) == false)
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-                File.WriteAllBytes(filePath, recorded.Data);
+                
+                writer.WriteSong(recorded);
             });
         }
     }

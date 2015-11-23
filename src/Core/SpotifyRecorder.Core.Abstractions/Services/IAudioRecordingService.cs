@@ -4,6 +4,6 @@ namespace SpotifyRecorder.Core.Abstractions.Services
 {
     public interface IAudioRecordingService
     {
-        IAudioRecorder StartRecording(AudioOutputDevice device, Song song);
+        IAudioRecorder StartRecording(Song song);
     }
 }

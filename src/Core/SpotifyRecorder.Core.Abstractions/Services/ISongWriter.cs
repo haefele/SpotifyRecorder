@@ -2,10 +2,8 @@
 
 namespace SpotifyRecorder.Core.Abstractions.Services
 {
-    public interface IAudioRecorder
+    public interface ISongWriter
     {
-        Song Song { get; }
-
-        RecordedSong StopRecording();
+        void WriteSong(RecordedSong song);
     }
 }
