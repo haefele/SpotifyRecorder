@@ -57,6 +57,10 @@ namespace SpotifyRecorder.Tests.Console
                 service.UpdateTags(tags, recorded);
 
                 string fileName = $"{recorded.Song.Artist} - {recorded.Song.Title}.mp3".ToValidFileName();
+
+                if (File.Exists(fileName))
+                    return;
+                
                 File.WriteAllBytes(Path.Combine(".", "Music", fileName), recorded.Data);
             });
         }
