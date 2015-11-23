@@ -48,7 +48,8 @@ namespace SpotifyRecorder.Core.Implementations.Services
                     return new Song
                     {
                         Title = currentStatus.Track.TrackResource.Name,
-                        Artist = currentStatus.Track.ArtistResource.Name
+                        Artist = currentStatus.Track.ArtistResource.Name,
+                        Album = currentStatus.Track.AlbumResource.Name
                     };
                 });
         }

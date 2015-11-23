@@ -60,6 +60,7 @@ namespace SpotifyRecorder.App.Console
                 var tags = id3TagService.GetTags(recorded);
                 tags.Artists = new[] { recorded.Song.Artist };
                 tags.Title = recorded.Song.Title;
+                tags.Album = recorded.Song.Album;
 
                 id3TagService.UpdateTags(tags, recorded);
 

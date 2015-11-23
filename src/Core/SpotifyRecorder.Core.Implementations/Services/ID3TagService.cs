@@ -1,9 +1,6 @@
 ﻿using System.IO;
-using System.Linq;
 using SpotifyRecorder.Core.Abstractions.Entities;
 using SpotifyRecorder.Core.Abstractions.Services;
-using TagLib;
-using TagLib.Id3v2;
 using File = TagLib.File;
 
 namespace SpotifyRecorder.Core.Implementations.Services
@@ -18,7 +15,7 @@ namespace SpotifyRecorder.Core.Implementations.Services
             {
                 Title = tagFile.Tag.Title,
                 Artists = tagFile.Tag.Performers,
-                Picture = tagFile.Tag.Pictures.FirstOrDefault()?.Data.Data
+                Album = tagFile.Tag.Album,
             };
         }
 
@@ -33,14 +30,7 @@ namespace SpotifyRecorder.Core.Implementations.Services
 
                 tagFile.Tag.Title = tags.Title;
                 tagFile.Tag.Performers = tags.Artists;
-
-                if (tags.Picture != null)
-                {
-                    tagFile.Tag.Pictures = new IPicture[]
-                    {
-                        new Picture(new ByteVector(tags.Picture, tags.Picture.Length)),
-                    };
-                }
+                tagFile.Tag.Album = tags.Album;
 
                 tagFile.Save();
 
