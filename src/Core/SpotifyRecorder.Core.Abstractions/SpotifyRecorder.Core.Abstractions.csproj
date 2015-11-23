@@ -53,6 +53,7 @@
     <Compile Include="Services\IAudioRecordingService.cs" />
     <Compile Include="Services\IID3TagService.cs" />
     <Compile Include="Services\ISpotifyService.cs" />
+    <Compile Include="SpotifyRecorderException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

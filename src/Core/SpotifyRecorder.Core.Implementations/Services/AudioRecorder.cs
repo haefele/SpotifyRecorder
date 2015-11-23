@@ -13,22 +13,19 @@ namespace SpotifyRecorder.Core.Implementations.Services
     public class AudioRecorder : IAudioRecorder
     {
         private readonly ISettings _settings;
-        private readonly MMDevice _actualDevice;
         private readonly WasapiCapture _capture;
         private readonly string _fileName;
         private readonly WaveFileWriter _writer;
         
         public Song Song { get; }
 
-        public AudioRecorder(ISettings settings, Song song)
+        public AudioRecorder(ISettings settings, MMDevice device, Song song)
         {
             this._settings = settings;
 
             this.Song = song;
-
-            this._actualDevice = new MMDeviceEnumerator().EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).First(f => f.FriendlyName == this._settings.RecorderDeviceName);
-
-            this._capture = new WasapiCapture(this._actualDevice);
+            
+            this._capture = new WasapiCapture(device);
             this._capture.DataAvailable += this.CaptureOnDataAvailable;
 
             this._fileName = Path.GetTempFileName();
