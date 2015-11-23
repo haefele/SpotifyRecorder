@@ -52,6 +52,9 @@ namespace SpotifyRecorder.Core.Implementations.Services
 
             File.Delete(this._fileName);
 
+            if (result.Data.Any() == false)
+                return null;
+
             return result;
         }
 

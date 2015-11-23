@@ -27,10 +27,22 @@ namespace SpotifyRecorder.Tests.Console
                     StopRecording(currentRecorder);
                 }
 
+                
                 if (song != null)
                 {
-                    System.Console.WriteLine($"Recording song {song.Title}");
-                    currentRecorder = recordingService.StartRecording(stereoMix, song);
+                    var expectedFilePath = GetFilePath(song);
+
+                    if (File.Exists(expectedFilePath))
+                    {
+                        System.Console.WriteLine($"Currently playing {song.Title}"); 
+                        return;
+                    }
+                    else
+                    {
+                        
+                        System.Console.WriteLine($"Recording song {song.Title}");
+                        currentRecorder = recordingService.StartRecording(stereoMix, song);
+                    }
                 }
                 else
                 {
@@ -42,11 +54,20 @@ namespace SpotifyRecorder.Tests.Console
             System.Console.ReadLine();
         }
 
+        private static string GetFilePath(Song song)
+        {
+            var fileName = $"{song?.Artist} - {song?.Title}.mp3".ToValidFileName();
+            return Path.Combine(".", "Music", fileName);
+        }
+
         private static void StopRecording(IAudioRecorder recorder)
         {
             Task.Run(() =>
             {
                 var recorded = recorder.StopRecording();
+
+                if (recorded == null)
+                    return;
 
                 ID3TagService service = new ID3TagService();
 
@@ -56,12 +77,15 @@ namespace SpotifyRecorder.Tests.Console
 
                 service.UpdateTags(tags, recorded);
 
-                string fileName = $"{recorded.Song.Artist} - {recorded.Song.Title}.mp3".ToValidFileName();
+                var filePath = GetFilePath(recorded.Song);
 
-                if (File.Exists(fileName))
+                if (File.Exists(filePath))
                     return;
-                
-                File.WriteAllBytes(Path.Combine(".", "Music", fileName), recorded.Data);
+
+                if (Directory.Exists(Path.GetDirectoryName(filePath)) == false)
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                File.WriteAllBytes(filePath, recorded.Data);
             });
         }
     }
