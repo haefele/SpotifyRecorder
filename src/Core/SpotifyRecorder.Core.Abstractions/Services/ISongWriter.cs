@@ -4,6 +4,6 @@ namespace SpotifyRecorder.Core.Abstractions.Services
 {
     public interface ISongWriter
     {
-        void WriteSong(RecordedSong song);
+        bool WriteSong(RecordedSong song);
     }
 }
