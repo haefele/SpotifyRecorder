@@ -16,20 +16,10 @@ namespace SpotifyRecorder.App.Console
     {
         static void Main(string[] args)
         {
-            try
-            {
-                var container = new WindsorContainer();
-                container.Install(FromAssembly.This());
+            var container = new WindsorContainer();
+            container.Install(FromAssembly.This());
 
-                container.Resolve<App>().Run();
-
-            }
-            catch (Exception e)
-            {
-                WriteLine(e.GetBaseException().Message.Yellow().OnRed());
-            }
-
-            System.Console.ReadLine();
+            container.Resolve<App>().Run();
         }
     }
 }
