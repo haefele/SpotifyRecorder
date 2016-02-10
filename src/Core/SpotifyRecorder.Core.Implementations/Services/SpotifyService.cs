@@ -45,6 +45,10 @@ namespace SpotifyRecorder.Core.Implementations.Services
                         return null;
 
                     var currentStatus = this._localApi.GetStatus();
+
+                    if (currentStatus?.Track == null)
+                        return null;
+
                     return new Song
                     {
                         Title = currentStatus.Track.TrackResource.Name,
