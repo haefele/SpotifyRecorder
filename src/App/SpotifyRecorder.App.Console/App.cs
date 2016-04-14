@@ -105,6 +105,9 @@ namespace SpotifyRecorder.App.Console
 
             int indent = (width - textWidth) / 2;
 
+            if (indent < 0)
+                indent = 0;
+
             foreach (var line in header)
             {
                 string lineToWrite = new string(' ', indent) + line + new string(' ', indent);
